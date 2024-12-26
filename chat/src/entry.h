@@ -1,10 +1,13 @@
 #include "common/application.h"
 #include "common/logger.h"
 #include "chat_type.h"
+#include "common/smemory.h"
 
 extern b8 create_chat(chat* out_chat);
 
 int main(void) {
+
+    initilize_memory();
 
     chat chat_inst;
 
@@ -27,6 +30,8 @@ int main(void) {
         KINFO("Failed to succesfull shutdown application");
         return 2;
     } 
+
+    shutdown_memory();
 
     return 0;
 }

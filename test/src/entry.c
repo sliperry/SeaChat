@@ -1,7 +1,7 @@
 #include "chat.h"
 
 #include <entry.h>
-#include <platform/platform.h>
+#include <common/smemory.h>
 
 b8 create_chat(chat* out_chat) {
 
@@ -15,7 +15,7 @@ b8 create_chat(chat* out_chat) {
     out_chat->initialize = chat_initialize;
     out_chat->on_resize =  chat_on_resize;
 
-    out_chat->state = platform_allocate(sizeof(chat_state), FALSE);
+    out_chat->state = sallocate(sizeof(chat_state), MEMORY_TAG_CHAT);
 
     return TRUE;
 }

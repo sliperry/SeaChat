@@ -90,6 +90,8 @@ STATIC_ASSERT(sizeof(f32) == 4, "Expected f32 to be 4 bytes.");
 // Utility macros.
 #define INVALID_ID_U32 4294967295U
 #define GIBIBYTES(amount) ((amount) * 1024ULL * 1024ULL * 1024ULL)
+#define MIBIBYTES(amount) ((amount) * 1024ULL * 1024ULL)
+#define KILOBYTES(amount) ((amount) * 1024ULL)
 
 // Inline qualifiers.
 #if defined(__clang__) || defined(__GNUC__)
