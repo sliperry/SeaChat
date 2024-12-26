@@ -5,7 +5,7 @@
 typedef struct chat {
     application_config app_config;
 
-    b8 (*Initialize)(struct chat* chat_inst);
+    b8 (*initialize)(struct chat* chat_inst);
 
     b8 (*update)(struct chat* chat_inst, f32 delta_time);
 
@@ -14,4 +14,4 @@ typedef struct chat {
     void (*on_resize)(struct chat* chat_inst, u32 width, u32 height);
 
     void* state;
-} char;
+} chat;

@@ -13,7 +13,7 @@ int main(void) {
         return -1;
     }
 
-    if(!chat_inst.Initialize || !chat_inst.on_resize || !chat_inst.render || chat_inst.update) {
+    if(!chat_inst.initialize || !chat_inst.on_resize || !chat_inst.render || !chat_inst.update) {
         KFATAL("The chat's function pointers must be assigned");
         return -2;
     }

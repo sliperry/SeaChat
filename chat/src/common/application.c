@@ -1,14 +1,16 @@
 #include "application.h"
-
-#include "logger.h"
 #include "platform/platform.h"
 
+#include "logger.h"
+
+#include "chat_type.h"
+
 typedef struct application_state {
+    chat* chat_inst;
+
     b8 is_running;
 
     b8 is_suspended;
-
-    chat* chat_inst;
 
     platform_state platform;
 
@@ -53,7 +55,7 @@ b8 application_create(chat* chat_inst) {
         return FALSE;
     }
 
-    if(!app_state.chat_inst->Initialize(app_state.chat_inst)) {
+    if(!app_state.chat_inst->initialize(app_state.chat_inst)) {
         KFATAL("Chat failed to Initilize");
         return FALSE;
     }

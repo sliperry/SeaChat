@@ -1,7 +1,8 @@
 #pragma once
 
 #include "defines.h"
-#include "chat_type.h"
+
+struct chat;
 
 typedef struct application_config {
     i16 start_pos_x;
@@ -15,6 +16,6 @@ typedef struct application_config {
     char* name;
 } application_config;
 
-KAPI b8 application_create(chat* chat_inst);
+KAPI b8 application_create(struct chat* chat_inst);
 
 KAPI b8 application_run();

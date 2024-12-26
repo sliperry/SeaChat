@@ -1,10 +1,19 @@
-#pragma once
+#include "chat.h"
 
-#include <common/defines.h>
-#include <chat_type.h>
+#include <common/logger.h>
 
-typedef struct chat_state {
-    f32 delta_time;
+b8 chat_initialize(chat* chat_inst) {
+    KDEBUG("chat initilization is called");
+    return TRUE;
+}
 
-}chat_state;
+b8 chat_update(chat* chat_inst, f32 delta) {
+    return TRUE;
+}
 
+b8 chat_render(chat* chat_inst, f32 delta) {
+    return TRUE;
+}
+
+void chat_on_resize(chat* chat_inst, u32 width, u32 height) {
+}
