@@ -4,6 +4,8 @@
 #include "logger.h"
 #include "smemory.h"
 #include "chat_type.h"
+#include "event.h"
+#include "input.h"
 
 typedef struct application_state {
     chat* chat_inst;
@@ -24,6 +26,9 @@ typedef struct application_state {
 static b8 initilzied = FALSE;
 static application_state app_state;
 
+b8 application_on_event(u16 code, void* sender, void* listener_inst, event_context context);
+b8 application_on_key(u16 code, void* sender, void* listener_inst, event_context context);
+
 b8 application_create(chat* chat_inst) {
     if (initilzied) {
         KERROR("application_create has been called more then once");
@@ -33,6 +38,7 @@ b8 application_create(chat* chat_inst) {
     app_state.chat_inst = chat_inst;
 
     initialize_logging();
+    input_initilize();
 
     KFATAL("A test message: %f", 3.14f);
     KERROR("A test message: %f", 3.14f);
@@ -43,6 +49,15 @@ b8 application_create(chat* chat_inst) {
 
     app_state.is_running = TRUE;
     app_state.is_suspended = FALSE;
+
+    if(!event_initilize()) {
+        KERROR("Event system has failed initilizations. Application can not continue.");
+        return FALSE;
+    }
+
+    event_register(EVENT_CODE_APPLICATION_QUIT, 0, application_on_event);
+    event_register(EVENT_CODE_KEY_PRESSED, 0, application_on_key);
+    event_register(EVENT_CODE_KEY_RELEASED, 0, application_on_key);
 
     if(!platform_startup(
         &app_state.platform, 
@@ -87,12 +102,58 @@ b8 application_run() {
                 app_state.is_running = FALSE;
                 break;
             }
+
+            input_update(0);
         }
     }
 
     app_state.is_running = FALSE;
 
+    event_unregister(EVENT_CODE_APPLICATION_QUIT, 0, application_on_event);
+    event_unregister(EVENT_CODE_KEY_PRESSED, 0, application_on_key);
+    event_unregister(EVENT_CODE_KEY_RELEASED, 0, application_on_key);
+
+    event_shutdown();
+    input_shutdown();
+
     platform_shutdown(&app_state.platform);
 
     return TRUE;
+}
+
+b8 application_on_event(u16 code, void* sender, void* listener_inst, event_context context) {
+    switch (code) {
+        case EVENT_CODE_APPLICATION_QUIT: {
+            KINFO("EVENT_CODE_APPLICATION_QUIT recieved, shutting down.");
+            app_state.is_running = FALSE;
+            return TRUE;
+        }
+    }
+
+    return FALSE;
+}
+
+b8 application_on_key(u16 code, void* sender, void* listener_inst, event_context context) {
+    if(code == EVENT_CODE_KEY_PRESSED) {
+        u16 key_code = context.data.u16[0];
+        if(key_code == KEY_ESCAPE) {
+            event_context data = {};
+            event_fire(EVENT_CODE_APPLICATION_QUIT, 0, data);
+
+            return TRUE;
+        } else if (key_code == KEY_A) {
+            KDEBUG("Explicitly - A key pressed!");
+        } else {
+            KDEBUG("'%c' key pressed in window", key_code);
+        }
+    } else if(code == EVENT_CODE_KEY_RELEASED) {
+        u16 key_code = context.data.u16[0];
+        if (key_code == KEY_B) {
+            KDEBUG("Explicitly - B key released");
+        } else {
+            KDEBUG("'%c' key released in window", key_code);
+        }
+        
+    }
+    return FALSE;
 }

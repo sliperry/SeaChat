@@ -15,7 +15,14 @@
         "cmocka.h": "c",
         "setjmp.h": "c",
         "application.h": "c",
-        "entry.h": "c"
+        "entry.h": "c",
+        "smemory.h": "c",
+        "event.h": "c",
+        "darray.h": "c",
+        "xutility": "c",
+        "type_traits": "c",
+        "xtr1common": "c",
+        "utility": "c"
     }, 
     "C_Cpp.errorSquiggles": "disabled"
 }

@@ -7,7 +7,7 @@ extern b8 create_chat(chat* out_chat);
 
 int main(void) {
 
-    initilize_memory();
+    initialize_memory();
 
     chat chat_inst;
 

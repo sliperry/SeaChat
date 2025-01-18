@@ -1,6 +1,7 @@
 #include "smemory.h"
-#include "logger.h"
 
+#include "logger.h"
+#include "cstring.h"
 #include "platform/platform.h"
 
 #include <string.h>
@@ -33,7 +34,7 @@ static const char* memory_tag_strings[MEMORY_TAG_MAX_TAGS] = {
     "SCENE      "
 };
 
-void initilize_memory() {
+void initialize_memory() {
     platform_zero_memory(&stats, sizeof(stats));
 }
 
@@ -115,6 +116,6 @@ char* get_memory_usage_str() {
         buffer_range.offset = KCLAMP(buffer_range.offset, 0, buffer_range.size - 1);
     }
     
-    char* out_string = _strdup(buffer);
+    char* out_string = string_duplicate(buffer);
     return out_string;
 }
